@@ -1,0 +1,47 @@
+version: '3.8'
+
+services:
+  backend:
+    build:
+      context: ./backend
+    ports:
+      - "3001:3001"
+    environment:
+      - MONGO_URI=mongodb+srv://william:Willichi7!@cluster0.jm5rb.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0
+      - JWT_SECRET=760bb86787637b902c837a7d4df1e0730cc9a516d84a9257d2be812828cd74be
+    depends_on:
+      - mongo
+    networks:
+      - ecommerce_network
+    # Optional: to ensure backend waits for MongoDB to be ready
+    command: ["sh", "-c", "until nc -z -v -w30 mongo 27017; do echo 'Waiting for MongoDB...'; sleep 1; done; npm start"]
+
+
+  frontend:
+    build:
+      context: ./frontend
+    ports:
+      - "3000:3000"
+    environment:
+      - FRONTEND_URL='http://localhost:3000'
+      - BKEP='http://localhost:3001'
+      - JWT_SECRET=760bb86787637b902c837a7d4df1e0730cc9a516d84a9257d2be812828cd74be
+    networks:
+      - ecommerce_network
+
+  mongo:
+    image: mongo:4.2
+    ports:
+      - "27017:27017"
+    volumes:
+      - mongo_data:/data/db
+    networks:
+      - ecommerce_network
+
+volumes:
+  mongo_data:
+
+networks:
+  ecommerce_network:
+
+
