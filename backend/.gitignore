@@ -50,6 +50,8 @@ ENV/
 # builds and dist #
 .dist
 dist
+.dist/
+dist/
 
 # Node modules #
 ################

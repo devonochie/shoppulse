@@ -176,4 +176,5 @@ Open a Pull Request
 
 📜 License
 MIT License - see LICENSE for details. #LICENSE
-# shoppulse
+
+{# shoppulse #}
