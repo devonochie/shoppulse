@@ -1,0 +1,20 @@
+"use strict";
+var __importDefault = (this && this.__importDefault) || function (mod) {
+    return (mod && mod.__esModule) ? mod : { "default": mod };
+};
+Object.defineProperty(exports, "__esModule", { value: true });
+const express_1 = __importDefault(require("express"));
+const authController_1 = __importDefault(require("../../controllers/authController"));
+const auth_1 = __importDefault(require("../../models/auth"));
+const emailer_1 = require("../../utils/emailer");
+const httpMiddleware_1 = require("../../middleware/httpMiddleware");
+const routes = express_1.default.Router();
+const authController = new authController_1.default(auth_1.default, emailer_1.mailService);
+routes.post('/register', authController.register.bind(authController));
+routes.post('/login', authController.login.bind(authController));
+routes.get('/me', httpMiddleware_1.authMiddleware, authController.me.bind(authController));
+routes.post('/logout', authController.logout.bind(authController));
+routes.post('/forgot-password', authController.forgotPassword.bind(authController));
+routes.post('/reset-password/:token', authController.resetPassword.bind(authController));
+routes.post('/refresh-token', authController.refreshToken.bind(authController));
+exports.default = routes;

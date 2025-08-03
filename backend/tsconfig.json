@@ -1,0 +1,24 @@
+{
+  "compilerOptions": {
+    /* Language and Environment */
+    "target": "es2022",
+    "module": "commonjs",
+    "rootDir": ".",             
+    "outDir": "dist",             
+    "moduleResolution": "node",
+    "baseUrl": "./",
+    "resolveJsonModule": true,
+    "types": ["node"],
+    
+    /* Type Checking */
+    "strict": true,
+    "esModuleInterop": true,
+    "forceConsistentCasingInFileNames": true,
+    "skipLibCheck": true,
+    
+    /* Custom Type Definitions */
+    "typeRoots": ["./node_modules/@types", "./src/types"]
+  },
+  "include": ["src/**/*",  "index.ts", "app.ts"  ],
+  "exclude": ["node_modules", "dist",  "**/*.test.ts"]
+}
