@@ -47,6 +47,9 @@ ENV/
 .env/
 .env
 
+# builds and dist #
+.dist
+
 # Node modules #
 ################
 node_modules/
