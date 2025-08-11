@@ -4,6 +4,7 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 const dotenv_1 = __importDefault(require("dotenv"));
+const node_cron_1 = __importDefault(require("node-cron"));
 const express_1 = __importDefault(require("express"));
 const cors_1 = __importDefault(require("cors"));
 const morgan_1 = __importDefault(require("morgan"));
@@ -12,9 +13,10 @@ const cookie_parser_1 = __importDefault(require("cookie-parser"));
 const db_1 = __importDefault(require("./src/config/db"));
 const logger_1 = __importDefault(require("./src/utils/logger"));
 const router_1 = __importDefault(require("./src/routes/router"));
-const httpMiddleware_1 = require("./src/middleware/httpMiddleware");
-const errorhandler_1 = __importDefault(require("./src/middleware/errorhandler"));
-const responseExtensions_1 = __importDefault(require("./src/middleware/responseExtensions"));
+const http_middleware_1 = require("./src/middleware/http.middleware");
+const error_handler_1 = __importDefault(require("./src/middleware/error.handler"));
+const response_extensions_1 = __importDefault(require("./src/middleware/response.extensions"));
+const cronAnalytic_1 = __importDefault(require("./src/utils/services/cronAnalytic"));
 dotenv_1.default.config();
 // express app initialization
 const app = (0, express_1.default)();
@@ -26,13 +28,15 @@ morgan_1.default.token('body', (req) => JSON.stringify(req.body));
 app.use(express_1.default.static('dist'));
 // cors config
 app.use((0, cors_1.default)());
+// cron job
+node_cron_1.default.schedule("0 0 * * *", cronAnalytic_1.default);
 // app middleware
 app.use((0, cookie_parser_1.default)());
 app.use((0, helmet_1.default)());
 app.use(express_1.default.json());
 app.use(express_1.default.urlencoded({ extended: true }));
-app.use(httpMiddleware_1.requestLogger);
-app.use(responseExtensions_1.default);
+app.use(http_middleware_1.requestLogger);
+app.use(response_extensions_1.default);
 // initializing Database....
 db_1.default
     .then(() => logger_1.default.info('Connected to Database'))
@@ -40,7 +44,7 @@ db_1.default
 // app routing
 app.use("/api/v1", router_1.default);
 // unknown endPoint handler
-app.use(httpMiddleware_1.unknownEndPoint);
+app.use(http_middleware_1.unknownEndPoint);
 // error handling
-app.use(errorhandler_1.default);
+app.use(error_handler_1.default);
 exports.default = app;

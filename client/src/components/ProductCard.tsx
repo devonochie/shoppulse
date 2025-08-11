@@ -7,8 +7,8 @@ import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
 import { useAppDispatch } from '../hooks/useRedux';
 import { addToCart } from '../store/slices/cartSlice';
-import { Product } from '../store/slices/productSlice';
 import { useToast } from '../hooks/use-toast';
+import { Product } from '@/types/product.type';
 
 interface ProductCardProps {
   product: Product;
@@ -26,16 +26,19 @@ const ProductCard = ({ product }: ProductCardProps) => {
     
     dispatch(addToCart({
       id: product.id,
-      name: product.name,
-      price: product.price,
+      title: product.title,
+      snapshot_price: product.price,
       image: product.images[0],
       quantity: 1,
       category: product.category,
+      items: [],
+      subtotal: 0,
+      product_id: ''
     }));
     
     toast({
       title: "Added to cart",
-      description: `${product.name} has been added to your cart.`,
+      description: `${product.title} has been added to your cart.`,
     });
   };
 
@@ -46,7 +49,7 @@ const ProductCard = ({ product }: ProductCardProps) => {
     
     toast({
       title: isWishlisted ? "Removed from wishlist" : "Added to wishlist",
-      description: `${product.name} has been ${isWishlisted ? 'removed from' : 'added to'} your wishlist.`,
+      description: `${product.title} has been ${isWishlisted ? 'removed from' : 'added to'} your wishlist.`,
     });
   };
 
@@ -121,7 +124,7 @@ const ProductCard = ({ product }: ProductCardProps) => {
           )}
           <img
             src={product.images[0]}
-            alt={product.name}
+            alt={product.title}
             className={`w-full h-full object-cover group-hover:scale-105 transition-transform duration-500 ${
               imageLoaded ? 'opacity-100' : 'opacity-0'
             }`}
@@ -175,7 +178,7 @@ const ProductCard = ({ product }: ProductCardProps) => {
           </div>
           
           <h3 className="font-semibold text-sm group-hover:text-primary transition-smooth line-clamp-2">
-            {product.name}
+            {product.title}
           </h3>
           
           <div className="flex items-center space-x-1 text-sm">
@@ -237,14 +240,14 @@ const ProductCard = ({ product }: ProductCardProps) => {
                   className="w-4 h-4 rounded-full border-2 border-border cursor-pointer"
                   style={{
                     backgroundColor: color.toLowerCase() === 'white' ? '#ffffff' : 
-                                   color.toLowerCase() === 'black' ? '#000000' :
-                                   color.toLowerCase() === 'blue' ? '#3b82f6' :
-                                   color.toLowerCase() === 'red' ? '#ef4444' :
-                                   color.toLowerCase() === 'green' ? '#22c55e' :
-                                   color.toLowerCase() === 'gray' ? '#6b7280' :
-                                   color.toLowerCase() === 'brown' ? '#a3781b' :
-                                   color.toLowerCase() === 'pink' ? '#ec4899' :
-                                   '#6b7280'
+                              color.toLowerCase() === 'black' ? '#000000' :
+                              color.toLowerCase() === 'blue' ? '#3b82f6' :
+                              color.toLowerCase() === 'red' ? '#ef4444' :
+                              color.toLowerCase() === 'green' ? '#22c55e' :
+                              color.toLowerCase() === 'gray' ? '#6b7280' :
+                              color.toLowerCase() === 'brown' ? '#a3781b' :
+                              color.toLowerCase() === 'pink' ? '#ec4899' :
+                              '#6b7280'
                   }}
                 />
               ))}

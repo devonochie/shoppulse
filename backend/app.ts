@@ -11,7 +11,8 @@ import router from './src/routes/router';
 import { requestLogger, unknownEndPoint } from './src/middleware/http.middleware';
 import errorHandler from "./src/middleware/error.handler"
 import responseExtensions from './src/middleware/response.extensions';
-import generateDailyAnalytics from 'src/utils/services/cronAnalytic';
+import generateDailyAnalytics from './src/utils/services/cronAnalytic';
+
 
 dotenv.config()
 

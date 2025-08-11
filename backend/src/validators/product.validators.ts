@@ -18,13 +18,13 @@ const productValidators = z.object({
             message: "Price can only have up to 2 decimal places"
         }),
     
-    image: z.string()
+    images:z.array(z.string()
         .url("Must be a valid URL")
         .startsWith("https://", "URL must be secure (HTTPS)")
         .refine(url => {
         const allowedExtensions = ['.jpg', '.jpeg', '.png', '.webp'];
         return allowedExtensions.some(ext => url.toLowerCase().endsWith(ext));
-        }, "Image must be JPG, JPEG, PNG, or WebP"),
+        }, "Image must be JPG, JPEG, PNG, or WebP")), 
     
     category: z.string()
         .min(1, "Category is required")

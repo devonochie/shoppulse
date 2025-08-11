@@ -1,5 +1,5 @@
 import mongoose, { Model, Schema } from "mongoose";
-import { Refund as RefundValidator } from "src/validators/refund.validator";
+import { Refund as RefundValidator } from "../validators/refund.validator";
 
 
 export interface IRefund extends RefundValidator, Document {}

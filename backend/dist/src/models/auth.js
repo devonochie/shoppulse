@@ -33,7 +33,14 @@ var __importStar = (this && this.__importStar) || (function () {
     };
 })();
 Object.defineProperty(exports, "__esModule", { value: true });
+exports.UserRole = void 0;
 const mongoose_1 = __importStar(require("mongoose"));
+var UserRole;
+(function (UserRole) {
+    UserRole["USER"] = "user";
+    UserRole["ADMIN"] = "admin";
+    UserRole["MODERATOR"] = "moderator";
+})(UserRole || (exports.UserRole = UserRole = {}));
 const userSchema = new mongoose_1.Schema({
     username: { type: String, required: true },
     email: { type: String, required: true },
@@ -45,7 +52,9 @@ const userSchema = new mongoose_1.Schema({
         }
     ],
     resetPasswordToken: { type: String },
-    resetPasswordExpires: { type: Date, default: Date.now }
+    resetPasswordExpires: { type: Date, default: Date.now },
+    role: { type: String, enum: Object.values(UserRole), default: UserRole.USER },
+    avatar: { type: String },
 }, { timestamps: true });
 const User = mongoose_1.default.model('User', userSchema);
 exports.default = User;

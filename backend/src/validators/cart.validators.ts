@@ -6,6 +6,15 @@ const idSchema = z.string().min(1, "ID is required");
 export const cartItemSchema = z.object({
     _id: z.string().optional(),
     product_id: idSchema,
+    title: z.string().min(1, "Title is required").max(100, "Title can't exceed 100 characters"),
+    price: z.number()
+        .min(0.01, "Price must be positive")
+        .max(10000, "Price can't exceed 10000"),
+    image: z.string().url("Invalid image URL"),
+    size: z.string().max(50).optional(),
+    color: z.string().max(50).optional(),
+    category: z.string().min(1, "Category is required").max(50,
+                "Category can't exceed 50 characters"),
     quantity: z.number()
         .min(1, "Quantity must be at least 1")
         .max(100, "Max quantity is 100"),

@@ -17,7 +17,7 @@ const CartSidebar = () => {
     dispatch(removeFromCart({ id, size, color }));
   };
 
-  const subtotal = items.reduce((sum, item) => sum + item.price * item.quantity, 0);
+  const subtotal = items.reduce((sum, item) => sum + item.snapshot_price * item.quantity, 0);
 
   return (
     <AnimatePresence>
@@ -79,11 +79,11 @@ const CartSidebar = () => {
                     >
                       <img
                         src={item.image}
-                        alt={item.name}
+                        alt={item.title}
                         className="h-20 w-20 object-cover rounded-lg bg-muted"
                       />
                       <div className="flex-1 space-y-2">
-                        <h3 className="font-medium text-sm">{item.name}</h3>
+                        <h3 className="font-medium text-sm">{item.title}</h3>
                         {(item.size || item.color) && (
                           <div className="text-xs text-muted-foreground">
                             {item.size && <span>Size: {item.size}</span>}
@@ -93,7 +93,7 @@ const CartSidebar = () => {
                         )}
                         <div className="flex items-center justify-between">
                           <div className="text-sm font-semibold">
-                            ${item.price.toFixed(2)}
+                            ${item.snapshot_price.toFixed(2)}
                           </div>
                           <div className="flex items-center space-x-2">
                             <Button

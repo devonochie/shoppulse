@@ -1,6 +1,6 @@
 import { z } from 'zod'
 import { cartItemSchema } from './cart.validators';
-import { ShippingMethod } from 'src/models/cart';
+import { ShippingMethod } from '../models/cart';
 
 
 export const orderStatusSchema = z.enum([

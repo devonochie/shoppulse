@@ -11,7 +11,7 @@ import { Separator } from '@/components/ui/separator';
 import { RadioGroup, RadioGroupItem } from '@/components/ui/radio-group';
 import { useAppSelector, useAppDispatch } from '../hooks/useRedux';
 import { clearCart } from '../store/slices/cartSlice';
-import { addOrder } from '../store/slices/orderSlice';
+import { addOrder, createOrder } from '../store/slices/orderSlice';
 import { useToast } from '../hooks/use-toast';
 
 interface CheckoutFormData {
@@ -42,7 +42,7 @@ const Checkout = () => {
 
   const { register, handleSubmit, formState: { errors } } = useForm<CheckoutFormData>();
 
-  const subtotal = items.reduce((sum, item) => sum + item.price * item.quantity, 0);
+  const subtotal = items.reduce((sum, item) => sum + item.snapshot_price * item.quantity, 0);
 
   const onSubmit = async (data: CheckoutFormData) => {
     setIsProcessing(true);
@@ -52,16 +52,17 @@ const Checkout = () => {
     
     const order = {
       id: `order-${Date.now()}`,
-      userId: user?.id || 'guest',
+      user_id: user?.id || 'guest',
       items,
       subtotal,
       shipping: shippingCost,
       tax,
       total,
       status: 'confirmed' as const,
-      shippingAddress: {
-        firstName: data.firstName,
-        lastName: data.lastName,
+      shipping_method: 'standard' as const,
+      billing_address: {
+        first_name: data.firstName,
+        last_name: data.lastName,
         address: data.address,
         city: data.city,
         state: data.state,
@@ -69,14 +70,32 @@ const Checkout = () => {
         country: data.country,
         phone: data.phone,
       },
-      paymentMethod: paymentMethod === 'card' ? 'Credit Card' : 'PayPal',
+      shipping_address: {
+        first_name: data.firstName,
+        last_name: data.lastName,
+        address: data.address,
+        city: data.city,
+        state: data.state,
+        zipCode: data.zipCode,
+        country: data.country,
+        phone: data.phone,
+      },
+      payment_method: paymentMethod === 'card' ? 'Credit Card' : 'PayPal',
       createdAt: new Date().toISOString(),
       updatedAt: new Date().toISOString(),
-      trackingNumber: `TRK${Math.random().toString(36).substring(2, 8).toUpperCase()}`,
-      estimatedDelivery: new Date(Date.now() + 5 * 24 * 60 * 60 * 1000).toISOString(),
+      tracking: {
+        carrier: 'UPS',
+        tracking_number: `TRK${Math.random().toString(36).substring(2, 8).toUpperCase()}`,
+        actual_delivery: new Date(Date.now() + 7 * 24 * 60 * 60 * 1000).toISOString(),
+        estimated_delivery: new Date(Date.now() + 5 * 24 * 60 * 60 * 1000).toISOString(),
+      },
+      payment_transaction_id: `txn-${Date.now()}`,
+      notes: '',
+      coupon_code: '', 
     };
     
     dispatch(addOrder(order));
+    dispatch(createOrder(order));
     dispatch(clearCart());
     
     toast({
@@ -328,11 +347,11 @@ const Checkout = () => {
                     <div key={`${item.id}-${item.size}-${item.color}`} className="flex space-x-3">
                       <img
                         src={item.image}
-                        alt={item.name}
+                        alt={item.title}
                         className="h-16 w-16 object-cover rounded-lg bg-muted"
                       />
                       <div className="flex-1 space-y-1">
-                        <h3 className="text-sm font-medium">{item.name}</h3>
+                        <h3 className="text-sm font-medium">{item.title}</h3>
                         <div className="text-xs text-muted-foreground">
                           Qty: {item.quantity}
                           {(item.size || item.color) && (
@@ -345,7 +364,7 @@ const Checkout = () => {
                           )}
                         </div>
                         <div className="text-sm font-semibold">
-                          ${(item.price * item.quantity).toFixed(2)}
+                          ${(item.snapshot_price * item.quantity).toFixed(2)}
                         </div>
                       </div>
                     </div>

@@ -1,5 +1,5 @@
 import mongoose, { Schema, Document, Model } from 'mongoose';
-import { Coupon as CouponValidator } from 'src/validators/coupon.validators';
+import { Coupon as CouponValidator } from '../validators/coupon.validators';
 
 
 type ICoupon =  CouponValidator

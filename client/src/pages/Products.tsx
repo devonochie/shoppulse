@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import { useEffect, useState } from 'react';
 import { useSearchParams } from 'react-router-dom';
 import { motion } from 'framer-motion';
@@ -12,6 +13,7 @@ import { useAppDispatch, useAppSelector } from '../hooks/useRedux';
 import { setProducts, updateFilters, setSearchQuery, setSortBy, clearFilters } from '../store/slices/productSlice';
 import { mockProducts } from '../data/mockData';
 import ProductCard from '../components/ProductCard';
+import { clearCartThunk } from '@/store/slices/cartSlice';
 
 const Products = () => {
   const [showFilters, setShowFilters] = useState(false);
@@ -43,13 +45,14 @@ const Products = () => {
       dispatch(updateFilters({ category: urlCategory }));
     }
   }, [dispatch, searchParams]);
-
+    
   const handleFilterChange = (filterType: string, value: any) => {
     dispatch(updateFilters({ [filterType]: value }));
   };
 
   const handleClearFilters = () => {
     dispatch(clearFilters());
+    dispatch(clearCartThunk())
     setSearchParams({});
   };
 

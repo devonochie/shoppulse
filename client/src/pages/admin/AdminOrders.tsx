@@ -7,7 +7,8 @@ import { Input } from '@/components/ui/input';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import { useAppSelector } from '@/hooks/useRedux';
 import { Eye, Package, Truck, CheckCircle, XCircle, Search } from 'lucide-react';
-import { OrderStatus } from '@/store/slices/orderSlice';
+import { OrderStatus } from '@/types/order.type';
+
 
 const AdminOrders = () => {
   const { orders } = useAppSelector((state) => state.orders);
@@ -25,9 +26,9 @@ const AdminOrders = () => {
       tax: 24.00,
       total: 343.98,
       status: 'delivered' as OrderStatus,
-      shippingAddress: {
-        firstName: 'John',
-        lastName: 'Doe',
+      shipping_address: {
+        first_name: 'John',
+        last_name: 'Doe',
         address: '123 Main St',
         city: 'New York',
         state: 'NY',
@@ -42,16 +43,16 @@ const AdminOrders = () => {
     },
     {
       id: 'ORDER-002',
-      userId: 'user2',
+      user_id: 'user2',
       items: [],
       subtotal: 159.99,
       shipping: 9.99,
       tax: 12.80,
       total: 182.78,
       status: 'shipped' as OrderStatus,
-      shippingAddress: {
-        firstName: 'Jane',
-        lastName: 'Smith',
+      shipping_address: {
+        first_name: 'Jane',
+        last_name: 'Smith',
         address: '456 Oak Ave',
         city: 'Los Angeles',
         state: 'CA',
@@ -59,10 +60,29 @@ const AdminOrders = () => {
         country: 'USA',
         phone: '+1987654321'
       },
-      paymentMethod: 'PayPal',
+      billing_address: {
+        first_name: 'Jane',
+        last_name: 'Smith',
+        address: '456 Oak Ave',
+        city: 'Los Angeles',
+        state: 'CA',
+        zipCode: '90210',
+        country: 'USA',
+        phone: '+1987654321'
+      },
+      payment_method: 'Credit Card',
+      shipping_method: 'express' as const,
       createdAt: '2024-01-18T09:15:00Z',
       updatedAt: '2024-01-19T16:20:00Z',
-      trackingNumber: 'TRK987654321'
+      tracking: {
+        tracking_number: 'TRK987654321',
+        estimated_delivery: '2024-01-25',
+        carrier: 'UPS',
+        actual_delivery: null 
+      } as const, 
+      payment_transaction_id: 'PAY-1234567890',
+      notes: 'Please handle with care',
+      coupon_code: 'WINTER20'
     },
     {
       id: 'ORDER-003',
@@ -73,9 +93,9 @@ const AdminOrders = () => {
       tax: 7.20,
       total: 105.18,
       status: 'confirmed' as OrderStatus,
-      shippingAddress: {
-        firstName: 'Mike',
-        lastName: 'Johnson',
+      shipping_address: {
+        first_name: 'Mike',
+        last_name: 'Johnson',
         address: '789 Pine St',
         city: 'Chicago',
         state: 'IL',
@@ -83,15 +103,24 @@ const AdminOrders = () => {
         country: 'USA',
         phone: '+1122334455'
       },
-      paymentMethod: 'Credit Card',
+      payment_method: 'Credit Card',
       createdAt: '2024-01-20T14:30:00Z',
-      updatedAt: '2024-01-20T14:30:00Z'
+      updatedAt: '2024-01-20T14:30:00Z',
+      tracking: {
+        tracking_number: 'TRK1122334455',
+        estimated_delivery: '2024-01-27',
+        carrier: 'FedEx',
+        actual_delivery: null
+      } as const,
+      payment_transaction_id: 'PAY-0987654321',
+      notes: 'Gift wrap please',
+      coupon_code: 'SPRING10'
     }
   ];
 
   const filteredOrders = demoOrders.filter(order => {
     const matchesSearch = order.id.toLowerCase().includes(searchTerm.toLowerCase()) ||
-      `${order.shippingAddress.firstName} ${order.shippingAddress.lastName}`.toLowerCase().includes(searchTerm.toLowerCase());
+      `${order.shipping_address.first_name} ${order.shipping_address.last_name}`.toLowerCase().includes(searchTerm.toLowerCase());
     const matchesStatus = statusFilter === 'all' || order.status === statusFilter;
     return matchesSearch && matchesStatus;
   });
@@ -236,9 +265,9 @@ const AdminOrders = () => {
                       <TableCell>
                         <div>
                           <p className="font-medium">
-                            {order.shippingAddress.firstName} {order.shippingAddress.lastName}
+                            {order.shipping_address.first_name} {order.shipping_address.last_name}
                           </p>
-                          <p className="text-sm text-muted-foreground">{order.shippingAddress.phone}</p>
+                          <p className="text-sm text-muted-foreground">{order.shipping_address.phone}</p>
                         </div>
                       </TableCell>
                       <TableCell>
@@ -251,7 +280,7 @@ const AdminOrders = () => {
                         </Badge>
                       </TableCell>
                       <TableCell>${order.total.toFixed(2)}</TableCell>
-                      <TableCell>{order.paymentMethod}</TableCell>
+                      <TableCell>{order.payment_method}</TableCell>
                       <TableCell>
                         <div className="flex gap-2">
                           <Button variant="ghost" size="sm">

@@ -27,6 +27,7 @@ import AdminOrders from "./pages/admin/AdminOrders";
 import AdminAnalytics from "./pages/admin/AdminAnalytics";
 import ProtectedRoute from "./components/ProtectedRoute";
 import NotFound from "./pages/NotFound";
+import AdminPage from "./pages/admin/AdminPage";
 
 const queryClient = new QueryClient();
 
@@ -47,6 +48,7 @@ const AppContent = () => {
           <Route path="/cart" element={<Cart />} />
           <Route path="/login" element={<Login />} />
           <Route path="/signup" element={<SignUp />} />
+      
           
           {/* Protected Routes */}
           <Route path="/checkout" element={
@@ -91,6 +93,13 @@ const AppContent = () => {
               <AdminAnalytics />
             </ProtectedRoute>
           } />
+          <Route path="/admin/create" element={
+            <ProtectedRoute adminOnly>
+              <AdminPage />
+            </ProtectedRoute>
+          } />
+
+          {/* Catch-all for 404 */}
           
           <Route path="*" element={<NotFound />} />
         </Routes>

@@ -1,8 +1,9 @@
+
+import AuthController from '../../controllers/auth.controller'
+import { authMiddleware } from '../../middleware/http.middleware'
+import User from '../../models/auth'
+import { mailService } from '../../utils/emailer'
 import express from 'express'
-import AuthController from '../../controllers/auth.controller';
-import User from '../../models/auth';
-import { mailService } from '../../utils/emailer';
-import { authMiddleware } from '../../middleware/http.middleware';
 
 const routes: express.Router = express.Router()
 

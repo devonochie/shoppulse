@@ -1,10 +1,10 @@
-import { Cart } from "src/models/cart"
+import { Cart } from "../models/cart"
 import express from 'express';
-import logger from "src/utils/logger";
-import { cartValidator } from "src/validators/cart.validators";
+import logger from "../utils/logger";
+import { cartValidator } from "../validators/cart.validators";
 import mongoose from "mongoose";
 import z from "zod";
-import { Coupon } from "src/models/coupon";
+import { Coupon } from "../models/coupon";
 
 
 
@@ -17,7 +17,7 @@ class CartController {
     async getCart (req: express.Request, res: express.Response, next: express.NextFunction ) {
         try {
             const cart = await this.cartModel.findOne({ user_id: req.user?._id })
-                .populate('items.product_id', "title price image")
+                .populate('items.product_id', "title price images category sizes colors reviewCount featured tags")
                 .populate('items.variant_id', "title price")
 
 
@@ -40,7 +40,7 @@ class CartController {
             const validation = cartValidator.pick({ items: true }).parse(req.body)
 
             const product = await mongoose.model("Product").findById(
-                validation.items[0].product_id).select("price")
+                validation.items[0].product_id).select("price, title images size color category")
 
             if(!product) {
                 return res.status(404).json({ message: "Product not found"})

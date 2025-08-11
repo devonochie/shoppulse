@@ -1,9 +1,8 @@
+import CartController from '../../controllers/cart.controller';
+import { authMiddleware } from '../../middleware/http.middleware';
+import { Cart } from '../../models/cart';
+import { Coupon } from '../../models/coupon';
 import express from 'express';
-
-import CartController from 'src/controllers/cart.controller';
-import { authMiddleware } from 'src/middleware/http.middleware';
-import { Cart } from 'src/models/cart';
-import { Coupon } from 'src/models/coupon';
 
 
 const routes: express.Router = express.Router();

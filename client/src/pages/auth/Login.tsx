@@ -6,8 +6,10 @@ import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { useAppDispatch } from '../../hooks/useRedux';
-import { loginSuccess } from '../../store/slices/authSlice';
+import { loginSuccess, loginUser } from '../../store/slices/authSlice';
 import { useToast } from '../../hooks/use-toast';
+import { useSelector } from 'react-redux';
+import { RootState } from '@/store';
 
 const Login = () => {
   const [email, setEmail] = useState('');
@@ -15,6 +17,7 @@ const Login = () => {
   const [showPassword, setShowPassword] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
   const [isVisible, setIsVisible] = useState(false);
+  const { user } =  useSelector((state: RootState) => state.auth)
   const dispatch = useAppDispatch();
   const navigate = useNavigate();
   const { toast } = useToast();
@@ -27,17 +30,16 @@ const Login = () => {
     e.preventDefault();
     setIsLoading(true);
 
-    // Mock authentication
     await new Promise(resolve => setTimeout(resolve, 1000));
     
     const mockUser = {
-      id: '1',
       email,
-      name: 'John Doe',
+      password: "me",
       role: email === 'admin@shopvibe.com' ? 'admin' as const : 'user' as const,
     };
 
-    dispatch(loginSuccess(mockUser));
+    // dispatch(loginUser(mockUser));
+    dispatch(loginSuccess(mockUser))
     toast({
       title: "Welcome back!",
       description: "You have been successfully logged in.",

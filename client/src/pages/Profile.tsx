@@ -50,10 +50,10 @@ const Profile = () => {
               <CardContent className="space-y-6">
                 <div className="flex items-center space-x-4">
                   <div className="w-20 h-20 bg-gradient-to-br from-primary to-accent rounded-full flex items-center justify-center text-white text-2xl font-bold float-animation">
-                    {user?.name?.charAt(0)}
+                    {user?.username?.charAt(0)}
                   </div>
                   <div className="flex-1">
-                    <h3 className="text-xl font-semibold">{user?.name}</h3>
+                    <h3 className="text-xl font-semibold">{user?.username}</h3>
                     <p className="text-muted-foreground">{user?.email}</p>
                     <div className="flex items-center gap-2 mt-2">
                       <ShieldCheckIcon className="w-4 h-4 text-success" />
@@ -72,7 +72,7 @@ const Profile = () => {
                       <UserIcon className="w-4 h-4" />
                       Name
                     </label>
-                    <div className="p-3 bg-muted/50 rounded-lg">{user?.name}</div>
+                    <div className="p-3 bg-muted/50 rounded-lg">{user?.username}</div>
                   </div>
                   <div className="space-y-2">
                     <label className="text-sm font-medium flex items-center gap-2">

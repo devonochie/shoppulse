@@ -5,19 +5,23 @@ import cartRoute from './cart/cart.route'
 import couponRoute from './coupon/coupon.route'
 import orderRoute from './order/order.route'
 import paymentRoute from './payment/payment.route'
+import { checkRedisHealth } from '../config/redis'
+
 
 const router: express.Router = express.Router()
 
 // Api routes
 router.use('/auth', authRoute)
-router.use('/product', productRoute)
+router.use('/products', productRoute)
 router.use('/cart', cartRoute )
-router.use('/coupon', couponRoute )
+router.use('/coupons', couponRoute )
 router.use('/order', orderRoute )
-router.use('/payment', paymentRoute )
+router.use('/payments', paymentRoute )
 
 // Health check endpoint
-router.get('/health', (_req, res: express.Response) => {
+router.get('/health', async (_req, res: express.Response) => {
+    const isHealthy = await checkRedisHealth()
+    res.json({ redis: isHealthy ? 'OK' : 'UNHEALTHY' });
     res.status(200).json({ status: 'OK' });
 });
 

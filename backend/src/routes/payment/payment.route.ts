@@ -1,8 +1,8 @@
-import { Order } from "src/models/order";
-import { Payment } from "src/models/payment";
-import MailService from "src/utils/emailer";
+import PaymentController from '../../controllers/payment.controller';
+import { Order } from '../../models/order';
+import { Payment } from '../../models/payment';
+import MailService from '../../utils/emailer';
 import express from 'express';
-import PaymentController from "src/controllers/payment.controller";
 
 const routes: express.Router = express.Router()
 const paymentController = new PaymentController(Payment, Order, new MailService())

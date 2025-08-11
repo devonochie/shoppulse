@@ -1,33 +1,8 @@
-import { createSlice, PayloadAction } from '@reduxjs/toolkit';
+/* eslint-disable @typescript-eslint/no-explicit-any */
+import { Product, ProductFilters } from '@/types/product.type';
+import { createSlice, PayloadAction, createAsyncThunk } from '@reduxjs/toolkit';
+import * as productApi from '../../api/services/product.api'
 
-export interface Product {
-  id: string;
-  name: string;
-  description: string;
-  price: number;
-  originalPrice?: number;
-  images: string[];
-  category: string;
-  subcategory?: string;
-  sizes?: string[];
-  colors?: string[];
-  stock: number;
-  rating: number;
-  reviewCount: number;
-  featured: boolean;
-  tags: string[];
-  createdAt: string;
-  updatedAt: string;
-}
-
-interface ProductFilters {
-  category: string;
-  priceRange: [number, number];
-  sizes: string[];
-  colors: string[];
-  rating: number;
-  inStock: boolean;
-}
 
 interface ProductState {
   products: Product[];
@@ -71,12 +46,12 @@ const applyFilters = (products: Product[], filters: ProductFilters, searchQuery:
     const matchesRating = product.rating >= filters.rating;
     const matchesStock = !filters.inStock || product.stock > 0;
     const matchesSearch = !searchQuery || 
-      product.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
+      product.title.toLowerCase().includes(searchQuery.toLowerCase()) ||
       product.description.toLowerCase().includes(searchQuery.toLowerCase()) ||
       product.tags.some(tag => tag.toLowerCase().includes(searchQuery.toLowerCase()));
 
     return matchesCategory && matchesPrice && matchesSize && matchesColor && 
-           matchesRating && matchesStock && matchesSearch;
+          matchesRating && matchesStock && matchesSearch;
   });
 };
 
@@ -89,7 +64,7 @@ const sortProducts = (products: Product[], sortBy: string) => {
     case 'price-desc':
       return sorted.sort((a, b) => b.price - a.price);
     case 'name':
-      return sorted.sort((a, b) => a.name.localeCompare(b.name));
+      return sorted.sort((a, b) => a.title.localeCompare(b.title));
     case 'rating':
       return sorted.sort((a, b) => b.rating - a.rating);
     case 'newest':
@@ -180,7 +155,107 @@ const productSlice = createSlice({
       state.error = action.payload;
     },
   },
+  extraReducers: (builder) => {
+    builder
+      .addCase(getProducts.pending, (state) => {
+        state.isLoading = true;
+        state.error = null;
+      })
+      .addCase(getProducts.fulfilled, (state, action) => {
+        state.isLoading = false;
+        state.products = action.payload;
+        state.filteredProducts = sortProducts(
+          applyFilters(action.payload, state.filters, state.searchQuery),
+          state.sortBy
+        );
+      })
+      .addCase(getProducts.rejected, (state, action) => {
+        state.isLoading = false;
+        state.error = action.payload?.message || 'Failed to fetch products';
+      });
+    builder
+      .addCase(getProductById.pending, (state) => {
+        state.isLoading = true;
+        state.error = null;
+      })
+      .addCase(getProductById.fulfilled, (state, action) => {
+        state.isLoading = false;
+        state.selectedProduct = action.payload;
+      })
+      .addCase(getProductById.rejected, (state, action) => {
+        state.isLoading = false;
+        state.error = action.payload?.message || 'Failed to fetch product';
+      });
+    builder
+      .addCase(createProduct.fulfilled, (state, action) => {
+        state.products.push(action.payload);
+        state.filteredProducts = sortProducts(
+          applyFilters(state.products, state.filters, state.searchQuery),
+          state.sortBy
+        );
+      })
+      .addCase(createProduct.rejected, (state, action) => {
+        state.error = action.payload?.message || 'Failed to create product';
+      })
+      .addCase(updateProductThunk.fulfilled, (state, action) => {
+        const index = state.products.findIndex(p => p.id === action.payload.id);
+        if (index !== -1) {
+          state.products[index] = action.payload;
+          state.filteredProducts = sortProducts(
+            applyFilters(state.products, state.filters, state.searchQuery),
+            state.sortBy
+          );
+        }
+      }
+      )
+      .addCase(updateProductThunk.rejected, (state, action) => {
+        state.error = action.payload?.message || 'Failed to update product';
+      }
+      )
+      .addCase(deleteProductThunk.fulfilled, (state, action) => {
+        state.products = state.products.filter(p => p.id !== action.meta.arg);
+        state.filteredProducts = sortProducts(
+          applyFilters(state.products, state.filters, state.searchQuery),
+          state.sortBy
+        );
+      } )
+      .addCase(deleteProductThunk.rejected, (state, action) => {
+        state.error = action.payload?.message || 'Failed to delete product';
+      })
+      .addCase(searchProduct.fulfilled, (state, action) => {
+        state.filteredProducts = action.payload;
+      })
+      .addCase(searchProduct.rejected, (state, action) => {
+        state.error = action.payload?.message || 'Failed to search products';
+      });
+  },
 });
+
+const createProductThunk = <T, R = Product>(name: string, apiCall: (arg: T) => Promise<R>) => {
+  return createAsyncThunk<R, T, { rejectValue: { message: string } }>(
+    `products/${name}`,
+    async (arg, { rejectWithValue }) => {
+      try {
+        return await apiCall(arg);
+      } catch (error: any) {
+        return rejectWithValue({
+          message: error.response?.data?.message || `${name} failed`
+        });
+      }
+    }
+  );
+};
+
+export const createProduct = createProductThunk<Product[]>('create', productApi.createProduct)
+export const getProducts = createProductThunk<ProductFilters | undefined, Product[]>('getAll', productApi.getProducts)
+export const getProductById = createProductThunk<string, Product>('getById', productApi.getProductById)
+export const updateProductThunk = createProductThunk<{ id: string; data: Partial<Product> }, Product>(
+  'update',
+  ({ id, data }) => productApi.updateProduct(id, data)
+);
+export const deleteProductThunk = createProductThunk<string, void>('delete', productApi.deleteProduct)
+export const searchProduct = createProductThunk<string, Product[]>('search', productApi.SearchProduct); 
+
 
 export const {
   setProducts,

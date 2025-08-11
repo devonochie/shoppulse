@@ -1,7 +1,8 @@
 import nodemailer from "nodemailer";
 import dotenv  from 'dotenv'
-import logger from "./logger";
+
 import { UserDocument } from "../models/auth";
+import logger from "./logger";
 dotenv.config()
 
 

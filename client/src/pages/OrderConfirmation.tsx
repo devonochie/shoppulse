@@ -54,10 +54,10 @@ const OrderConfirmation = () => {
                   <span>Status:</span>
                   <span className="text-success capitalize">{currentOrder.status}</span>
                 </div>
-                {currentOrder.trackingNumber && (
+                {currentOrder.tracking.tracking_number && (
                   <div className="flex justify-between">
                     <span>Tracking:</span>
-                    <span className="font-mono">{currentOrder.trackingNumber}</span>
+                    <span className="font-mono">{currentOrder.tracking.tracking_number}</span>
                   </div>
                 )}
               </div>

@@ -1,5 +1,6 @@
 import { z } from 'zod'
-import { paymentMethodSchema } from './order.validators'
+import { paymentMethodSchema } from './order.validators';
+
 
 export const currencySchema = z.enum(['USD', 'EUR', 'GBP', 'JPY']);
 

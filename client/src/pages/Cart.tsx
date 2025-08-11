@@ -10,7 +10,7 @@ const Cart = () => {
   const dispatch = useAppDispatch();
   const { items, total, itemCount, shippingCost, tax } = useAppSelector((state) => state.cart);
 
-  const subtotal = items.reduce((sum, item) => sum + item.price * item.quantity, 0);
+  const subtotal = items.reduce((sum, item) => sum + item.snapshot_price * item.quantity, 0);
 
   const handleUpdateQuantity = (id: string, quantity: number, size?: string, color?: string) => {
     dispatch(updateQuantity({ id, quantity, size, color }));
@@ -100,7 +100,7 @@ const Cart = () => {
                   <Link to={`/products/${item.id}`} className="flex-shrink-0">
                     <img
                       src={item.image}
-                      alt={item.name}
+                      alt={item.title}
                       className="h-24 w-24 object-cover rounded-lg bg-muted hover:scale-105 transition-transform"
                     />
                   </Link>
@@ -110,7 +110,7 @@ const Cart = () => {
                       to={`/products/${item.id}`}
                       className="font-medium hover:text-primary transition-smooth"
                     >
-                      {item.name}
+                      {item.title}
                     </Link>
                     
                     <div className="text-sm text-muted-foreground">
@@ -127,7 +127,7 @@ const Cart = () => {
                     
                     <div className="flex items-center justify-between">
                       <div className="text-lg font-semibold text-primary">
-                        ${(item.price * item.quantity).toFixed(2)}
+                        ${(item.snapshot_price * item.quantity).toFixed(2)}
                       </div>
                       
                       <div className="flex items-center space-x-3">

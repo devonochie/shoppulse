@@ -1,6 +1,6 @@
 import dotenv from "dotenv";
-import { MONGO_URI } from "./connect";
 import mongoose from 'mongoose';
+import { MONGO_URI } from "./connect";
 
 dotenv.config()
 

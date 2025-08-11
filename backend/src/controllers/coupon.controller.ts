@@ -1,7 +1,7 @@
 import { Coupon } from '../models/coupon';
-import { couponValidator } from 'src/validators/coupon.validators';
+import { couponValidator } from '../validators/coupon.validators';
 import express from 'express';
-import logger from 'src/utils/logger';
+import logger from '../utils/logger';
 
 class CouponController {
 

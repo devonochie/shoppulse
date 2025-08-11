@@ -1,7 +1,7 @@
-import { CartDocument } from "src/models/cart";
+import { CartDocument } from "../models/cart";
 import { UserDocument } from "../models/auth";
-import { OrderDocument } from "src/models/order";
-import { PaymentDocument } from "src/models/payment";
+import { OrderDocument } from "../models/order";
+import { PaymentDocument } from "../models/payment";
 
 
 declare global {
@@ -11,7 +11,7 @@ declare global {
             user? : UserDocument | null,
             file?: Express.Multer.File,
             files?: Express.Multer.File[],
-            callback: FileCallback,
+            callback?: FileCallback,
             cart?: CartDocument | null,
             order?: OrderDocument | null
             payment?: PaymentDocument

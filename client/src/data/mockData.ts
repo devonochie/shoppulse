@@ -1,9 +1,9 @@
-import { Product } from '../store/slices/productSlice';
+import { Product } from "@/types/product.type";
 
 export const mockProducts: Product[] = [
   {
     id: '1',
-    name: 'Wireless Bluetooth Headphones',
+    title: 'Wireless Bluetooth Headphones',
     description: 'Premium quality wireless headphones with active noise cancellation, 30-hour battery life, and crystal-clear audio. Perfect for music lovers and professionals.',
     price: 199.99,
     originalPrice: 249.99,
@@ -22,10 +22,11 @@ export const mockProducts: Product[] = [
     tags: ['wireless', 'bluetooth', 'noise-cancelling', 'premium'],
     createdAt: '2024-01-15T10:00:00Z',
     updatedAt: '2024-01-15T10:00:00Z',
+    name: undefined
   },
   {
     id: '2',
-    name: 'Slim Fit Cotton T-Shirt',
+    title: 'Slim Fit Cotton T-Shirt',
     description: 'Comfortable and stylish cotton t-shirt with modern slim fit design. Made from 100% organic cotton for all-day comfort.',
     price: 29.99,
     originalPrice: 39.99,
@@ -44,10 +45,11 @@ export const mockProducts: Product[] = [
     tags: ['cotton', 'slim-fit', 'casual', 'organic'],
     createdAt: '2024-01-14T10:00:00Z',
     updatedAt: '2024-01-14T10:00:00Z',
+    name: undefined
   },
   {
     id: '3',
-    name: 'Smart Fitness Watch',
+    title: 'Smart Fitness Watch',
     description: 'Advanced fitness tracking watch with heart rate monitor, GPS, sleep tracking, and 7-day battery life. Water-resistant design.',
     price: 299.99,
     images: [
@@ -56,7 +58,7 @@ export const mockProducts: Product[] = [
     ],
     category: 'Electronics',
     subcategory: 'Wearables',
-    sizes: ['Small', 'Medium', 'Large'],
+    sizes: ['Small', 'Medzium', 'Large'],
     colors: ['Black', 'Silver', 'Rose Gold'],
     stock: 25,
     rating: 4.7,
@@ -65,10 +67,11 @@ export const mockProducts: Product[] = [
     tags: ['fitness', 'smartwatch', 'health', 'gps'],
     createdAt: '2024-01-13T10:00:00Z',
     updatedAt: '2024-01-13T10:00:00Z',
+    name: undefined
   },
   {
     id: '4',
-    name: 'Ceramic Coffee Mug Set',
+    title: 'Ceramic Coffee Mug Set',
     description: 'Beautiful set of 4 ceramic coffee mugs with elegant design. Microwave and dishwasher safe. Perfect for your morning coffee ritual.',
     price: 49.99,
     images: [
@@ -86,10 +89,11 @@ export const mockProducts: Product[] = [
     tags: ['ceramic', 'coffee', 'kitchen', 'set'],
     createdAt: '2024-01-12T10:00:00Z',
     updatedAt: '2024-01-12T10:00:00Z',
+    name: undefined
   },
   {
     id: '5',
-    name: 'Yoga Exercise Mat',
+    title: 'Yoga Exercise Mat',
     description: 'Premium non-slip yoga mat with extra cushioning. Eco-friendly TPE material, lightweight and durable. Includes carrying strap.',
     price: 79.99,
     images: [
@@ -107,10 +111,11 @@ export const mockProducts: Product[] = [
     tags: ['yoga', 'exercise', 'fitness', 'eco-friendly'],
     createdAt: '2024-01-11T10:00:00Z',
     updatedAt: '2024-01-11T10:00:00Z',
+    name: undefined
   },
   {
     id: '6',
-    name: 'LED Desk Lamp',
+    title: 'LED Desk Lamp',
     description: 'Modern LED desk lamp with adjustable brightness and color temperature. USB charging port included. Perfect for work and study.',
     price: 89.99,
     images: [
@@ -128,10 +133,11 @@ export const mockProducts: Product[] = [
     tags: ['led', 'desk', 'adjustable', 'modern'],
     createdAt: '2024-01-10T10:00:00Z',
     updatedAt: '2024-01-10T10:00:00Z',
+    name: undefined
   },
   {
     id: '7',
-    name: 'Leather Crossbody Bag',
+    title: 'Leather Crossbody Bag',
     description: 'Stylish genuine leather crossbody bag with multiple compartments. Perfect for daily use, work, or travel. Adjustable strap included.',
     price: 129.99,
     originalPrice: 159.99,
@@ -150,10 +156,11 @@ export const mockProducts: Product[] = [
     tags: ['leather', 'bag', 'crossbody', 'genuine'],
     createdAt: '2024-01-09T10:00:00Z',
     updatedAt: '2024-01-09T10:00:00Z',
+    name: undefined
   },
   {
     id: '8',
-    name: 'Wireless Phone Charger',
+    title: 'Wireless Phone Charger',
     description: 'Fast wireless charging pad compatible with all Qi-enabled devices. Sleek design with LED indicator. Anti-slip base for stability.',
     price: 39.99,
     images: [
@@ -171,11 +178,12 @@ export const mockProducts: Product[] = [
     tags: ['wireless', 'charger', 'qi', 'fast-charging'],
     createdAt: '2024-01-08T10:00:00Z',
     updatedAt: '2024-01-08T10:00:00Z',
+    name: undefined
   },
   // Additional products for variety
   {
     id: '9',
-    name: 'Stainless Steel Water Bottle',
+    title: 'Stainless Steel Water Bottle',
     description: 'Insulated stainless steel water bottle keeps drinks cold for 24 hours or hot for 12 hours. BPA-free and dishwasher safe.',
     price: 34.99,
     images: [
@@ -192,10 +200,11 @@ export const mockProducts: Product[] = [
     tags: ['stainless-steel', 'insulated', 'bpa-free', 'hydration'],
     createdAt: '2024-01-07T10:00:00Z',
     updatedAt: '2024-01-07T10:00:00Z',
+    name: undefined
   },
   {
     id: '10',
-    name: 'Gaming Mechanical Keyboard',
+    title: 'Gaming Mechanical Keyboard',
     description: 'High-performance mechanical gaming keyboard with RGB backlighting, programmable keys, and durable construction.',
     price: 149.99,
     images: [
@@ -212,5 +221,6 @@ export const mockProducts: Product[] = [
     tags: ['gaming', 'mechanical', 'rgb', 'programmable'],
     createdAt: '2024-01-06T10:00:00Z',
     updatedAt: '2024-01-06T10:00:00Z',
+    name: undefined
   },
 ];

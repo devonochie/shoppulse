@@ -1,12 +1,12 @@
-import { Order } from "src/models/order";
-import MailService from "src/utils/emailer";
+import { Order } from "../models/order";
+import MailService from "../utils/emailer";
 import express from 'express';
-import logger from "src/utils/logger";
-import { orderStatusSchema, orderValidator, shippingOrderTrackingDetails} from "src/validators/order.validators";
+import logger from "../utils/logger";
+import { orderStatusSchema, orderValidator, shippingOrderTrackingDetails} from "../validators/order.validators";
 import z from "zod";
-import { stripe } from "src/config/stripe";
-import { Refund } from "src/models/refund";
-import { refundValidator } from "src/validators/refund.validator";
+import { stripe } from "../config/stripe";
+import { Refund } from "../models/refund";
+import { refundValidator } from "../validators/refund.validator";
 
 
 
@@ -127,6 +127,20 @@ class OrderController {
             next(error)
             logger.error("Error creating order", error instanceof Error ? error.message : "Unknown error") 
         }
+    }
+
+    async deleteOrder(req: express.Request, res: express.Response, next: express.NextFunction) {
+        try {
+            const order = await this.orderModel.findByIdAndDelete(req.params.id);
+            if (!order) return res.status(404).json({ error: "Order not found" });
+            return res.success({
+                data: order
+            }, "Order deleted successfully")
+        } catch (error) {
+            next(error)
+            logger.error("Error deleting order", error instanceof Error ? error.message : "Unknown error") 
+        }
+
     }
 }
 

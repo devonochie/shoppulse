@@ -5,12 +5,12 @@ import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { useAppDispatch } from '../../hooks/useRedux';
-import { loginSuccess } from '../../store/slices/authSlice';
+import { loginSuccess, registerUser } from '../../store/slices/authSlice';
 import { useToast } from '../../hooks/use-toast';
 
 const SignUp = () => {
   const [formData, setFormData] = useState({
-    name: '',
+    username: '',
     email: '',
     password: '',
     confirmPassword: ''
@@ -37,11 +37,11 @@ const SignUp = () => {
     const mockUser = {
       id: Date.now().toString(),
       email: formData.email,
-      name: formData.name,
+      username: formData.username,
       role: 'user' as const,
     };
 
-    dispatch(loginSuccess(mockUser));
+    dispatch(registerUser(mockUser));
     toast({
       title: "Account created!",
       description: "Welcome to ShopVibe!",
@@ -69,8 +69,8 @@ const SignUp = () => {
               <Label htmlFor="name">Full Name</Label>
               <Input
                 id="name"
-                value={formData.name}
-                onChange={(e) => setFormData({...formData, name: e.target.value})}
+                value={formData.username}
+                onChange={(e) => setFormData({...formData, username: e.target.value})}
                 placeholder="Enter your full name"
                 required
               />

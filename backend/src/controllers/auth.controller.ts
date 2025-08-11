@@ -6,7 +6,10 @@ import MailService from '../utils/emailer';
 import userValidators from "../validators/auth.validator";
 import logger from "../utils/logger";
 import crypto from 'crypto'
+import { redis } from "../config/redis";
 import { JwtPayload } from "../middleware/http.middleware";
+
+
 
 
 
@@ -88,10 +91,23 @@ class AuthController {
                 sameSite: "strict"
             });
 
+            redis.set(`user:${user._id}`, JSON.stringify({
+                email: user.email, 
+                username: user.username,
+                accessToken,
+                refreshToken
+            }), 'EX', 60 * 60 * 24 * 7); // Store for 7 days
+            
+            redis.set(`accessToken:${accessToken}`, JSON.stringify({
+                email: user.email, 
+                username: user.username,
+                user_id: user._id
+            }), 'EX', 60 * 15); // Store for 15 minutes
+
             return res.success({
                 accessToken, 
                     refreshToken, 
-                    user: { email: user.email, name: user.username },   
+                    user: { email: user.email, username: user.username },   
                 },
                 'Login successful'  
             

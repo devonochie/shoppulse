@@ -1,8 +1,9 @@
+import CouponController from '../../controllers/coupon.controller';
+import { authorize } from '../../middleware/role.middleware';
+import { UserRole } from '../../models/auth';
+import { Coupon } from '../../models/coupon';
 import express from 'express';
-import CouponController from 'src/controllers/coupon.controller';
-import { authorize } from 'src/middleware/role.middleware';
-import { UserRole } from 'src/models/auth';
-import { Coupon } from 'src/models/coupon';
+
 
 
 const routes: express.Router = express.Router();

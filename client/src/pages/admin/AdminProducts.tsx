@@ -7,6 +7,7 @@ import { Input } from '@/components/ui/input';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import { useAppSelector } from '@/hooks/useRedux';
 import { Edit, Trash2, Plus, Search } from 'lucide-react';
+import { Link } from 'react-router-dom';
 
 const AdminProducts = () => {
   const { products } = useAppSelector((state) => state.products);
@@ -14,7 +15,7 @@ const AdminProducts = () => {
   const [statusFilter, setStatusFilter] = useState('all');
 
   const filteredProducts = products.filter(product => {
-    const matchesSearch = product.name.toLowerCase().includes(searchTerm.toLowerCase());
+    const matchesSearch = product.title.toLowerCase().includes(searchTerm.toLowerCase());
     const matchesStatus = statusFilter === 'all' || 
       (statusFilter === 'in-stock' && product.stock > 0) ||
       (statusFilter === 'out-of-stock' && product.stock === 0);
@@ -28,7 +29,7 @@ const AdminProducts = () => {
           <h1 className="text-3xl font-bold text-gradient-primary">Manage Products</h1>
           <Button className="btn-gradient">
             <Plus className="w-4 h-4 mr-2" />
-            Add Product
+            <Link to={'/admin/create'}>Add Product</Link>
           </Button>
         </div>
 
@@ -118,11 +119,11 @@ const AdminProducts = () => {
                         <div className="flex items-center gap-3">
                           <img 
                             src={product.images[0]} 
-                            alt={product.name}
+                            alt={product.title}
                             className="w-10 h-10 rounded-md object-cover"
                           />
                           <div>
-                            <p className="font-medium">{product.name}</p>
+                            <p className="font-medium">{product.title}</p>
                             <p className="text-sm text-muted-foreground">ID: {product.id}</p>
                           </div>
                         </div>

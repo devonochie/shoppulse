@@ -1,6 +1,7 @@
-import { AnalyticsSnapshot } from "src/models/analytics";
-import { Order } from "src/models/order";
+import { AnalyticsSnapshot } from "../../models/analytics";
+import { Order } from "../../models/order";
 import logger from "../logger";
+
 
 export default async function generateDailyAnalytics() {
     try {

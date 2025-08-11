@@ -1,9 +1,9 @@
 /* eslint-disable @typescript-eslint/no-unused-vars */
-import Product from "src/models/product";
+import Product from "../models/product";
 import express from 'express';
-import { validatePartailProduct, validateProduct } from "src/validators/product.validators";
-import logger from "src/utils/logger";
-import { UserRole } from "src/models/auth";
+import { validatePartailProduct, validateProduct } from "../validators/product.validators";
+import logger from "../utils/logger";
+
 
 
 
@@ -20,10 +20,14 @@ class ProductController {
         }
 
         try {
-            const productPhoto: string | null = req.file ? req.file.path.replace(/\\/g, '/') : null;
+            const files = req.files as Express.Multer.File[] | undefined;
+
+            const imagePaths: string[] = files
+            ? files.map(file => file.path.replace(/\\/g, '/'))
+            : [];
             const product = new this.productModel({
                 ...validation.data,
-                image: productPhoto
+                images: imagePaths
             })
 
             await product.save()

@@ -1,10 +1,10 @@
-import MailService from 'src/utils/emailer';
+import MailService from '../utils/emailer';
 import { Payment } from '../models/payment';
 import express from 'express';
-import { paymentValidator } from 'src/validators/payment.validators';
-import { stripe } from 'src/config/stripe';
-import logger from 'src/utils/logger';
-import { Order } from 'src/models/order';
+import { paymentValidator } from '../validators/payment.validators';
+import { stripe } from '../config/stripe';
+import logger from '../utils/logger';
+import { Order } from '../models/order';
 import Stripe from 'stripe';
 
 

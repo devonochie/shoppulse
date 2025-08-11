@@ -7,7 +7,7 @@ import { Badge } from '@/components/ui/badge';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { useAppDispatch, useAppSelector } from '../hooks/useRedux';
 import { setSelectedProduct } from '../store/slices/productSlice';
-import { addToCart } from '../store/slices/cartSlice';
+import { addToCart, addToCartThunk } from '../store/slices/cartSlice';
 import { mockProducts } from '../data/mockData';
 import { useToast } from '../hooks/use-toast';
 
@@ -55,20 +55,40 @@ const ProductDetail = () => {
       return;
     }
 
+    // dispatch(addToCartThunk({
+    //   id: selectedProduct.id,
+    //   title: selectedProduct.title,
+    //   snapshot_price: selectedProduct.price,
+    //   image: selectedProduct.images[0],
+    //   quantity, 
+    //   size: selectedSize || undefined,
+    //   color: selectedColor || undefined,
+    //   category: selectedProduct.category,
+    //   items: [],
+    //   subtotal: 0,
+    //   product_id: selectedProduct.id,
+    //   requires_price_check:  false,
+    //   shipping_method: 'standard',
+    //   coupon_code: '',
+    // }));
+
     dispatch(addToCart({
       id: selectedProduct.id,
-      name: selectedProduct.name,
-      price: selectedProduct.price,
+      title: selectedProduct.title,
+      snapshot_price: selectedProduct.price,
       image: selectedProduct.images[0],
       quantity,
       size: selectedSize || undefined,
       color: selectedColor || undefined,
       category: selectedProduct.category,
+      items: [],
+      subtotal: 0,
+      product_id: selectedProduct.id,
     }));
     
     toast({
       title: "Added to cart",
-      description: `${selectedProduct.name} has been added to your cart.`,
+      description: `${selectedProduct.title} has been added to your cart.`,
     });
   };
 
@@ -111,7 +131,7 @@ const ProductDetail = () => {
                 initial={{ opacity: 0 }}
                 animate={{ opacity: 1 }}
                 src={selectedProduct.images[selectedImage]}
-                alt={selectedProduct.name}
+                alt={selectedProduct.title}
                 className="w-full h-full object-cover"
               />
             </div>
@@ -128,7 +148,7 @@ const ProductDetail = () => {
                   >
                     <img
                       src={image}
-                      alt={`${selectedProduct.name} ${index + 1}`}
+                      alt={`${selectedProduct.title} ${index + 1}`}
                       className="w-full h-full object-cover"
                     />
                   </button>
@@ -150,7 +170,7 @@ const ProductDetail = () => {
                 )}
               </div>
               
-              <h1 className="text-3xl font-bold mb-4">{selectedProduct.name}</h1>
+              <h1 className="text-3xl font-bold mb-4">{selectedProduct.title}</h1>
               
               <div className="flex items-center space-x-4 mb-4">
                 <div className="flex items-center space-x-2">
@@ -223,14 +243,14 @@ const ProductDetail = () => {
                       }`}
                       style={{
                         backgroundColor: color.toLowerCase() === 'white' ? '#ffffff' : 
-                                       color.toLowerCase() === 'black' ? '#000000' :
-                                       color.toLowerCase() === 'blue' ? '#3b82f6' :
-                                       color.toLowerCase() === 'red' ? '#ef4444' :
-                                       color.toLowerCase() === 'green' ? '#22c55e' :
-                                       color.toLowerCase() === 'gray' ? '#6b7280' :
-                                       color.toLowerCase() === 'brown' ? '#a3781b' :
-                                       color.toLowerCase() === 'pink' ? '#ec4899' :
-                                       '#6b7280'
+                          color.toLowerCase() === 'black' ? '#000000' :
+                          color.toLowerCase() === 'blue' ? '#3b82f6' :
+                          color.toLowerCase() === 'red' ? '#ef4444' :
+                          color.toLowerCase() === 'green' ? '#22c55e' :
+                          color.toLowerCase() === 'gray' ? '#6b7280' :
+                          color.toLowerCase() === 'brown' ? '#a3781b' :
+                          color.toLowerCase() === 'pink' ? '#ec4899' :
+                          '#6b7280'
                       }}
                     />
                   ))}

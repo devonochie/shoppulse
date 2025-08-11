@@ -1,5 +1,6 @@
 import mongoose, { Schema, Document, Model } from 'mongoose';
-import { User as UserValidator} from 'src/validators/auth.validator';
+import {User as UserValidators} from '../validators/auth.validator';
+
 
 
 interface RefreshToken {
@@ -14,7 +15,7 @@ export enum UserRole {
 }
 
 // Define the shape of the User fields
-interface IUser extends UserValidator {
+interface IUser extends  UserValidators{
   refreshTokens: RefreshToken[],
   role: UserRole
 }

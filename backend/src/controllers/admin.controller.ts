@@ -1,8 +1,8 @@
-import logger from 'src/utils/logger';
 import express from 'express';
-import { Order } from 'src/models/order';
-import { Payment } from 'src/models/payment';
-import User from 'src/models/auth';
+import { Order } from '../models/order';
+import { Payment } from '../models/payment';
+import User from '../models/auth';
+import logger from '../utils/logger';
 
 
 

@@ -1,11 +1,10 @@
-import express from 'express'
+import ProductController from '../../controllers/product.controller';
 import { authMiddleware } from '../../middleware/http.middleware';
-import ProductController from 'src/controllers/product.controller';
-import Product from 'src/models/product';
-import { authorize } from 'src/middleware/role.middleware';
-import { UserRole } from 'src/models/auth';
-import upload from 'src/utils/file.upload';
-
+import { authorize } from '../../middleware/role.middleware';
+import { UserRole } from '../../models/auth';
+import Product from '../../models/product';
+import upload from '../../utils/file.upload';
+import express from 'express'
 
 
 const routes: express.Router = express.Router()
@@ -13,7 +12,7 @@ const productController = new ProductController(Product)
 
 routes.post('/', authMiddleware, 
     authorize([UserRole.ADMIN]), 
-    upload.single('image'),  
+    upload.array('images', 5), 
     productController.createProduct.bind(productController)
 )
 
@@ -29,7 +28,7 @@ routes.get('/:id',
 routes.patch('/:id', 
     authMiddleware, 
     authorize([UserRole.ADMIN]), 
-    upload.single('image'),
+    upload.array('images', 5), 
     productController.updateProduct.bind(productController)
 );
 routes.delete('/:id', 

@@ -136,7 +136,7 @@ const Navbar = () => {
                 </DropdownMenuTrigger>
                 <DropdownMenuContent align="end" className="w-56">
                   <div className="px-2 py-1.5 text-sm font-medium">
-                    {user?.name || user?.email}
+                    {user?.username || user?.email}
                   </div>
                   <DropdownMenuSeparator />
                   <DropdownMenuItem asChild>

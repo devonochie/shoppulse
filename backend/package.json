@@ -4,12 +4,13 @@
   "main": "index.js",
   "scripts": {
     "build:watch": "tsc --watch",
-    "start": "node dist/index.js",
-    "dev": "ts-node src/index.ts",
-    "dev:watch": "nodemon --exec ts-node src/index.ts",
+    "start": "node -r tsconfig-paths/register dist/index.js",
+    "dev": "nodemon dist/index.js",
+    "dev:watch": "nodemon --exec \"ts-node -r tsconfig-paths/register src/index.ts\"",
     "lint": "eslint .",
     "clean": "rimraf dist",
-    "build": "npm run clean && tsc"
+    "build": "npm run clean && tsc && cp -r src/public dist/ 2>/dev/null || :",
+    "test": "echo \"Error: no test specified\" && exit 1"
   },
   "keywords": [],
   "author": "",
@@ -31,6 +32,7 @@
     "prettier": "^3.6.2",
     "rimraf": "^6.0.1",
     "ts-node": "^10.9.2",
+    "tsconfig-paths": "^4.2.0",
     "typescript": "^5.8.3"
   },
   "dependencies": {

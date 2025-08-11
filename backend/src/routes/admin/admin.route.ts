@@ -1,11 +1,11 @@
 import express from 'express';
-import AdminController from '../../controllers/admin.controller';
+import { authMiddleware } from '../../middleware/http.middleware';
+import { Order } from '../../models/order';
+import { Payment } from '../../models/payment';
+import User, { UserRole } from '../../models/auth';
+import { authorize } from '../../middleware/role.middleware';
 import AnalyticControllers from '../../controllers/analytics.controller';
-import { authMiddleware } from 'src/middleware/http.middleware';
-import { Order } from 'src/models/order';
-import { Payment } from 'src/models/payment';
-import User, { UserRole } from 'src/models/auth';
-import { authorize } from 'src/middleware/role.middleware';
+import AdminController from '../../controllers/admin.controller';
 
 
 const routes: express.Router = express.Router();

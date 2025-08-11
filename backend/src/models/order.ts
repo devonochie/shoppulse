@@ -3,6 +3,7 @@ import { OrderStatus, Order as OrderValidator } from "../validators/order.valida
 import { ShippingMethod } from "./cart";
 
 
+
 interface IOrder extends OrderValidator {
     status: OrderStatus
     total: number;
@@ -21,10 +22,14 @@ const orderSchema: Schema = new Schema<OrderDocument>({
     }],
     shipping_method: {type: String, enum: Object.values(ShippingMethod), default: ShippingMethod.STANDARD},
     billing_address: {
+        first_name: String,
+        last_name: String,
+        address: String,
         street: String,
         city: String,
         state: String,
         postal_code: String,
+        phone: String,
         country: String
     },
     payment_method: { type: String, enum: ["credit_card", "stripe", "bank_transfer"] },

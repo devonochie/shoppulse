@@ -1,8 +1,9 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
-import { Order } from 'src/models/order';
+
+import { AnalyticsSnapshot } from '../models/analytics';
+import { Order } from '../models/order';
+import logger from '../utils/logger';
 import express from 'express';
-import logger from 'src/utils/logger';
-import { AnalyticsSnapshot } from 'src/models/analytics';
 
 
 class AnalyticControllers {

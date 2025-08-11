@@ -151,13 +151,13 @@ const Home = () => {
                 <div className="aspect-square overflow-hidden">
                   <img
                     src={product.images[0]}
-                    alt={product.name}
+                    alt={product.title}
                     className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
                   />
                 </div>
                 <div className="p-4">
                   <h3 className="font-semibold text-sm mb-2 group-hover:text-primary transition-smooth">
-                    {product.name}
+                    {product.title}
                   </h3>
                   <div className="flex items-center justify-between">
                     <div className="flex items-center space-x-2">

@@ -1,7 +1,14 @@
 import mongoose, { Schema, Document, Model } from 'mongoose';
-import { Product as ProductValidator } from 'src/validators/product.validators';
+import { Product as ProductValidator } from '../validators/product.validators';
 
-type IProduct = ProductValidator
+interface IProduct extends ProductValidator {
+    subCategory?: string
+    sizes: string[]
+    colors: string[]
+    reviewCount: number
+    featured: boolean
+    tags: string[]
+}
 
 export interface ProductDocument extends IProduct, Document {}
 
@@ -27,15 +34,22 @@ const productSchema: Schema = new Schema<ProductDocument> ({
         max: [1000000, 'Price cannot exceed $1,000,000'],
         set: (val: number) => parseFloat(val.toFixed(2)) // Ensure 2 decimal places
     },
-    image: {
-        type: String,
-        required: [true, 'Image URL is required'],
+    images: {
+        type: [String],
+        required: [true, 'At least one image URL is required'],
         validate: {
-        validator: function(v: string) {
-            return /^https?:\/\/.+(\.jpg|\.jpeg|\.png|\.webp)$/i.test(v);
+            validator: function (arr: string[]) {
+                return (
+                    Array.isArray(arr) &&
+                    arr.length > 0 &&
+                    arr.every((v) =>
+                    /^https?:\/\/.+(\.jpg|\.jpeg|\.png|\.webp)$/i.test(v)
+                    )
+                );
+            },
+            message:
+            'Each image must be a valid URL ending with .jpg, .jpeg, .png, or .webp',
         },
-        message: 'Image must be a valid URL ending with .jpg, .jpeg, .png, or .webp'
-        }
     },
     category: {
         type: String,
@@ -52,7 +66,13 @@ const productSchema: Schema = new Schema<ProductDocument> ({
         type: Number,
         min: [0, 'Rating cannot be below 0'],
         max: [5, 'Rating cannot exceed 5']
-    }
+    },
+    sizes: { type: [String] },
+    colors: { type: [String] },
+    reviewCount: { type: Number},
+    featured: { type: Boolean, default: false},
+    tags: { type: [String] }
+    
 }, { 
     timestamps: true ,
     toJSON: { virtuals: true },

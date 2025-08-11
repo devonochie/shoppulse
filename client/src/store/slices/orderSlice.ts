@@ -1,35 +1,7 @@
-import { createSlice, PayloadAction } from '@reduxjs/toolkit';
-import { CartItem } from './cartSlice';
-
-export type OrderStatus = 'pending' | 'confirmed' | 'shipped' | 'delivered' | 'cancelled';
-
-export interface ShippingAddress {
-  firstName: string;
-  lastName: string;
-  address: string;
-  city: string;
-  state: string;
-  zipCode: string;
-  country: string;
-  phone: string;
-}
-
-export interface Order {
-  id: string;
-  userId: string;
-  items: CartItem[];
-  subtotal: number;
-  shipping: number;
-  tax: number;
-  total: number;
-  status: OrderStatus;
-  shippingAddress: ShippingAddress;
-  paymentMethod: string;
-  createdAt: string;
-  updatedAt: string;
-  trackingNumber?: string;
-  estimatedDelivery?: string;
-}
+/* eslint-disable @typescript-eslint/no-explicit-any */
+import { Order, OrderStatus, ShippingAddress } from '@/types/order.type';
+import { createAsyncThunk, createSlice, PayloadAction } from '@reduxjs/toolkit';
+import * as orderApi from '../../api/services/order.api';
 
 interface OrderState {
   orders: Order[];
@@ -62,7 +34,7 @@ const orderSlice = createSlice({
         order.status = action.payload.status;
         order.updatedAt = new Date().toISOString();
         if (action.payload.trackingNumber) {
-          order.trackingNumber = action.payload.trackingNumber;
+          order.tracking.tracking_number = action.payload.trackingNumber;
         }
       }
     },
@@ -80,6 +52,39 @@ const orderSlice = createSlice({
     },
   },
 });
+
+const createOrderThunk = <T, R = Order
+>(name: string, apiCall: (arg: T) => Promise<R>) => {
+  return createAsyncThunk<R, T, { rejectValue: { message: string } }>(
+    `products/${name}`,
+    async (arg, { rejectWithValue }) => {
+      try {
+        return await apiCall(arg);
+      } catch (error: any) {
+        return rejectWithValue({
+          message: error.response?.data?.message || `${name} failed`
+        });
+      }
+    }
+  );
+};
+
+export const createOrder = createOrderThunk<Order, Order>('createOrder', orderApi.createOrder)
+export const fetchOrders = createOrderThunk<string, Order>('fetchOrders', orderApi.getOrder);
+export const updateOrder = createOrderThunk<{ id: string; status: OrderStatus; trackingNumber?: string }, Order>(
+  'updateOrder',
+  ({ id, status, trackingNumber }) => orderApi.updateOrderStatus(id, status, trackingNumber)
+);
+export const addShipping = createOrderThunk<{ orderId: string; shippingData: ShippingAddress }, Order>(
+  'addShipping',
+  ({ orderId, shippingData }) => orderApi.addShipping(orderId, shippingData)
+);
+export const processRefund = createOrderThunk<{ orderId: string; refundData: unknown }, Order>(
+  'processRefund',
+  ({ orderId, refundData }) => orderApi.processRefund(orderId, refundData)
+);
+export const deleteOrder = createOrderThunk<string, void>('deleteOrder', orderApi.deleteOrder);
+
 
 export const {
   setOrders,

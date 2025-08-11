@@ -1,6 +1,6 @@
 import {  Model, Schema } from 'mongoose';
 import mongoose from 'mongoose';
-import { Payment as PaymentValidator } from 'src/validators/payment.validators';
+import { Payment as PaymentValidator } from '../validators/payment.validators';
 
 
 interface IPayment extends PaymentValidator {
